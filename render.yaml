@@ -1,0 +1,41 @@
+services:
+  - type: web
+    name: denya-collections-api
+    runtime: docker
+    plan: free
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3001
+      - key: CORS_ORIGIN
+        value: https://collections.denya.com
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: DB_HOST
+        fromDatabase:
+          name: denya-postgres
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: denya-postgres
+          property: port
+      - key: DB_NAME
+        fromDatabase:
+          name: denya-postgres
+          property: database
+      - key: DB_USER
+        fromDatabase:
+          name: denya-postgres
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: denya-postgres
+          property: password
+    healthCheckPath: /health
+    autoDeploy: true
+
+databases:
+  - name: denya-postgres
+    plan: free
+    ipAllowList: []
